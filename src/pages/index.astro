@@ -1,0 +1,60 @@
+---
+import Counter from '../components/Counter.jsx';
+import { GraphQLClient } from "graphql-request";
+import ProductList from '../components/ProductList.astro';
+
+// Create a new GraphQL client with the Hygraph endpoint
+const client = new GraphQLClient(import.meta.env.HYGRAPH_HIGH_PERFORMANCE_ENDPOINT);
+
+// Declare Products type
+type Product = {
+  name: string;
+  price: number;
+  shortDescription: string;
+  stock: number;
+  images: {
+    url: string;
+    alt: string;
+  }[];
+};
+
+type Products = {
+  products: Product[];
+};
+
+// Fetch the data via the GraphQL query
+const { products }: Products = await client.request(`
+  query MyQuery {
+    products {
+      name
+      price
+      shortDescription
+      stock
+      images {
+        url
+        alt
+      }
+    }
+  }
+`);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <div class="m-12">
+      <h1 class="mb-4 text-4xl text-center">Click me!</h1>
+			<Counter client:load />
+
+			 <h2 class="mb-8 text-5xl font-bold">Available Products:</h2>
+      <ProductList products={products} />
+
+
+    </div>
+  </body>
+</html>

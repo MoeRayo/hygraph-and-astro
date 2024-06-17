@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+export interface Product {
+  name: string;
+  price: number;
+  shortDescription: string;
+  stock: number;
+  images: {
+    url: string;
+    alt: string;
+  }[];
+}
+const { name, price, shortDescription, stock, images } = Astro.props;
+---
+
+<div class=" border border-stone-300 border-solid p-4 mb-4">
+  <div class="flex">
+    {images.map((image) => (
+      <Image src={image.url} alt={image.alt} width="50" height="50" loading="lazy"  class="w-1/4 mr-2"/>
+    ))}
+  </div>
+  <h2 class="text-2xl my-2 capitalize">{name}</h2>
+  <p class="mb-2">{shortDescription}</p>
+  <p class="font-bold mb-2">Price: ${price}</p>
+  <p class="mb-2">Stock: {stock}</p>
+  
+</div>

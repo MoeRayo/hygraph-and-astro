@@ -1,0 +1,22 @@
+---
+import ProductItem from './ProductItem.astro';
+
+export interface Product {
+  name: string;
+  price: number;
+  shortDescription: string;
+  stock: number;
+  images: {
+    url: string;
+    alt: string;
+  }[];
+}
+
+const { products } = Astro.props;
+---
+
+<div class="flex md:flex-row flex-col gap-4  justify-between">
+  {products.map((product: Product) => (
+    <ProductItem {...product} />
+  ))}
+</div>
